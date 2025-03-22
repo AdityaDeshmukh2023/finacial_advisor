@@ -10,6 +10,10 @@ import {
   CheckSquare,
 } from "lucide-react";
 import NavBar from "../components/NavBar";
+import { useNavigate } from "react-router-dom"; // Fixed import
+import { useState, useEffect, useContext } from "react";
+import AuthContext from "../Authorisation/AuthProvider";
+import { handleSuccess } from "../utils";
 
 const Card = ({ children, className }) => (
   <div className={`bg-white rounded-lg shadow-md ${className}`}>{children}</div>
@@ -20,10 +24,22 @@ const CardContent = ({ children, className }) => (
 );
 
 const UserProfile = () => {
+  const { logout } = useContext(AuthContext) || {}; // Added fallback
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    handleSuccess("logged out successfully ");
+    if (logout) logout(); // Check if logout is defined
+    navigate("/login");
+  }
+
   return (
     <>
-      <NavBar language="en" toggleLanguage={() => {}} />
-
+      <NavBar
+        language="en"
+        toggleLanguage={() => console.log("Language toggled")}
+      />{" "}
+      {/* Fixed toggleLanguage */}
       <div className="min-h-screen bg-gradient-to-br pt-16 from-green-50 to-white">
         {/* Header Section */}
         <div className="bg-gradient-to-r from-green-300 to-green-50 p-8">
@@ -44,7 +60,6 @@ const UserProfile = () => {
         {/* Main Content */}
         <div className="max-w-6xl mx-auto p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Personal Info Card */}
             <Card className="md:col-span-1">
               <CardContent className="p-6">
                 <h2 className="text-xl font-semibold mb-4">
@@ -68,6 +83,14 @@ const UserProfile = () => {
                   </p>
                 </div>
               </CardContent>
+              <div className="flex justify-center items-center">
+                <button
+                  onClick={handleLogout}
+                  className="logout-button bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600 transition duration-300"
+                >
+                  Logout
+                </button>
+              </div>
             </Card>
 
             {/* Activities Section */}
