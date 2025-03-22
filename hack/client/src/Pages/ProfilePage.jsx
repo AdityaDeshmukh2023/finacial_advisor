@@ -10,7 +10,7 @@ import {
   CheckSquare,
 } from "lucide-react";
 import NavBar from "../components/NavBar";
-import { useNavigate } from "react-router-dom"; // Fixed import
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "../Authorisation/AuthProvider";
 import { handleSuccess } from "../utils";
@@ -24,12 +24,12 @@ const CardContent = ({ children, className }) => (
 );
 
 const UserProfile = () => {
-  const { logout } = useContext(AuthContext) || {}; // Added fallback
+  const { logout } = useContext(AuthContext) || {};
   const navigate = useNavigate();
 
   function handleLogout() {
     handleSuccess("logged out successfully ");
-    if (logout) logout(); // Check if logout is defined
+    if (logout) logout();
     navigate("/login");
   }
 
@@ -38,8 +38,7 @@ const UserProfile = () => {
       <NavBar
         language="en"
         toggleLanguage={() => console.log("Language toggled")}
-      />{" "}
-      {/* Fixed toggleLanguage */}
+      />
       <div className="min-h-screen bg-gradient-to-br pt-16 from-green-50 to-white">
         {/* Header Section */}
         <div className="bg-gradient-to-r from-green-300 to-green-50 p-8">
@@ -49,9 +48,9 @@ const UserProfile = () => {
                 <Users size={48} className="text-green-600" />
               </div>
               <div className="text-black">
-                <h1 className="text-3xl font-bold">John Doe</h1>
-                <p className="text-black">Software Developer</p>
-                <p className="mt-2">San Francisco, CA</p>
+                <h1 className="text-3xl font-bold">Aditya Deshmukh</h1>
+                <p className="text-black">Software Engineer</p>
+                <p className="mt-2">Pune, Maharashtra</p>
               </div>
             </div>
           </div>
@@ -68,18 +67,16 @@ const UserProfile = () => {
                 <div className="space-y-3">
                   <p>
                     <span className="font-medium">Email:</span>{" "}
-                    john.doe@example.com
+                    aditya.deshmukh@gmail.com
                   </p>
                   <p>
-                    <span className="font-medium">Phone:</span> (555) 123-4567
+                    <span className="font-medium">Phone:</span> +91 98765 43210
                   </p>
                   <p>
-                    <span className="font-medium">Location:</span> San
-                    Francisco, CA
+                    <span className="font-medium">Location:</span> Mumbai, Maharashtra
                   </p>
                   <p>
-                    <span className="font-medium">Languages:</span> English,
-                    Spanish
+                    <span className="font-medium">Languages:</span> English, Hindi, Marathi
                   </p>
                 </div>
               </CardContent>
@@ -103,8 +100,8 @@ const UserProfile = () => {
                       <Briefcase className="text-green-600" />
                       <h3 className="text-lg font-semibold">Current Job</h3>
                     </div>
-                    <p>Senior Developer at Tech Corp</p>
-                    <p className="text-sm text-gray-600 mt-2">2020 - Present</p>
+                    <p>Senior Developer at TCS</p>
+                    <p className="text-sm text-gray-600 mt-2">2021 - Present</p>
                   </CardContent>
                 </Card>
 
@@ -116,9 +113,9 @@ const UserProfile = () => {
                         Learning Progress
                       </h3>
                     </div>
-                    <p>3 Courses Completed</p>
+                    <p>5 Courses Completed</p>
                     <p className="text-sm text-gray-600 mt-2">
-                      Currently learning React
+                      Currently learning Financial Management
                     </p>
                   </CardContent>
                 </Card>
@@ -134,23 +131,23 @@ const UserProfile = () => {
                     <div className="flex items-center gap-3">
                       <Bike className="text-green-600" />
                       <div>
-                        <p className="font-medium">Booked a bike ride</p>
+                        <p className="font-medium">Tracked monthly expenses</p>
                         <p className="text-sm text-gray-600">
-                          Yesterday at 2:30 PM
+                          Yesterday at 3:30 PM
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <MessageCircle className="text-green-600" />
                       <div>
-                        <p className="font-medium">Posted in Community</p>
+                        <p className="font-medium">Discussion on SIP investments</p>
                         <p className="text-sm text-gray-600">2 days ago</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <Image className="text-green-600" />
                       <div>
-                        <p className="font-medium">Shared a new photo</p>
+                        <p className="font-medium">Uploaded income documents</p>
                         <p className="text-sm text-gray-600">3 days ago</p>
                       </div>
                     </div>
@@ -164,12 +161,12 @@ const UserProfile = () => {
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <CheckSquare className="text-green-600" />
-                      <h3 className="text-lg font-semibold">Todo List</h3>
+                      <h3 className="text-lg font-semibold">Financial Goals</h3>
                     </div>
                     <div className="space-y-2">
-                      <p>• Complete React Tutorial</p>
-                      <p>• Update Portfolio</p>
-                      <p>• Schedule Team Meeting</p>
+                      <p>• Start SIP investments</p>
+                      <p>• Create emergency fund</p>
+                      <p>• Plan tax-saving investments</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -178,12 +175,12 @@ const UserProfile = () => {
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Newspaper className="text-green-600" />
-                      <h3 className="text-lg font-semibold">Tech News Feed</h3>
+                      <h3 className="text-lg font-semibold">Financial News</h3>
                     </div>
                     <div className="space-y-2">
-                      <p>• Latest AI Developments</p>
-                      <p>• Web3 Updates</p>
-                      <p>• New Framework Release</p>
+                      <p>• RBI Policy Updates</p>
+                      <p>• Sensex Movement</p>
+                      <p>• New Tax Guidelines</p>
                     </div>
                   </CardContent>
                 </Card>
