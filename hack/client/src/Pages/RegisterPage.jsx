@@ -15,13 +15,12 @@ const RegistrationPage = () => {
     age: "",
     dob: "",
     gender: "",
-    bloodGroup: "",
     contactNumber: "",
     email: "",
     username: "",
     password: "",
     confirmPassword: "",
-    profilePic: null, // To store the uploaded file
+    profilePic: null,
     address: "",
     terms: false,
   });
@@ -46,7 +45,6 @@ const RegistrationPage = () => {
       newErrors.age = "Valid age is required";
     if (!formData.dob) newErrors.dob = "Date of Birth is required";
     if (!formData.gender) newErrors.gender = "Gender is required";
-    if (!formData.bloodGroup) newErrors.bloodGroup = "Blood Group is required";
     if (!/^\d{10}$/.test(formData.contactNumber))
       newErrors.contactNumber = "Contact Number must be 10 digits";
     if (!/^\S+@\S+\.\S+$/.test(formData.email))
@@ -85,7 +83,7 @@ const RegistrationPage = () => {
 
       // API call
       await axios.post(
-        "https://intership-college.onrender.com/api/auth/signup",
+        "http://localhost:8080/api/auth/signup",
         formDataToSend,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -151,17 +149,6 @@ const RegistrationPage = () => {
           { label: "Female", value: "female" },
           { label: "Other", value: "other" },
         ]}
-      />
-
-      <InputField
-        label="Blood Group"
-        type="text"
-        id="bloodGroup"
-        name="bloodGroup"
-        placeholder="Enter Blood Group"
-        value={formData.bloodGroup}
-        onChange={handleChange}
-        error={errors.bloodGroup}
       />
 
       <InputField

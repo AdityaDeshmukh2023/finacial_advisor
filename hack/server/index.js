@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api/auth", AuthRouter);
 
 app.get("/ping", (req, res) => {
   res.send("hello server");
