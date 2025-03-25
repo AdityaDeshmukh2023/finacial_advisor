@@ -4,7 +4,7 @@ import Home from "./Pages/Home";
 import { ToastContainer } from "react-toastify";
 import NewsPage from "./Pages/NewsPage";
 import LearningCenter from "./Pages/Learnings";
-import UserProfile from "./Pages/ProfilePage";
+// import UserProfile from "./Pages/ProfilePage";
 import VerticalRoadmap from "./Pages/Roadmap";
 import YouTubeShorts from "./components/Shorts";
 import FinancialAdvisor from "./Pages/Heropage";
@@ -21,10 +21,14 @@ import DiscussionForums from "./Pages/community";
 import DairyForumPage from "./Pages/dairyforum";
 import SuccessStories from "./Pages/SuccessStoriesAvi";
 import QASessions from "./Pages/qna";
+
 import LoginPage from "./Pages/Login";
 import RegistrationPage from "./Pages/Signup";
 
-import ProtectedRoute from "./components/protected-route";
+import ProtectedRoute from "./components/protected-route"; 
+
+import FinancialAdvisorChatbotUi from "./Pages/financialAdvisiorChatBotUi";
+
 
 function App() {
   return (
@@ -40,7 +44,7 @@ function App() {
         <Route path="/news" element={<ProtectedRoute><NewsPage /></ProtectedRoute>} />
         <Route path="/learn" element={<ProtectedRoute><LearningCenter /></ProtectedRoute>} />
 
-        <Route path="/profiles" element={<UserProfile />} />
+        {/* <Route path="/profiles" element={<UserProfile />} /> */}
 
         <Route path="/road" element={<ProtectedRoute><VerticalRoadmap /></ProtectedRoute>} />
         <Route path="/shorts" element={<ProtectedRoute><YouTubeShorts /></ProtectedRoute>} />
@@ -57,6 +61,8 @@ function App() {
         <Route path="/stories" element={<SuccessStories />} />
         
         <Route path="/qna" element={<ProtectedRoute><QASessions /></ProtectedRoute>} />
+
+        <Route path="/advisor" element={<ProtectedRoute><FinancialAdvisorChatbotUi /></ProtectedRoute>} />
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>

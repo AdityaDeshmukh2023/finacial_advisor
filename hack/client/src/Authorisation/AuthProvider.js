@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const response = await axios.get(
-            "https://intership-college.onrender.com/api/auth/verify",
+            "http://localhost:8080/api/auth/verify",
             {
               headers: { Authorization: `Bearer ${token}` },
             }
