@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 import NavBar from "../components/NavBar";
 
+
+
 const Card = ({ children, className }) => (
   <div className={`bg-white rounded-lg shadow-md ${className}`}>{children}</div>
 );
@@ -20,6 +22,7 @@ const CardContent = ({ children, className }) => (
 );
 
 const UserProfile = () => {
+
   return (
     <>
       <NavBar language="en" toggleLanguage={() => {}} />

@@ -3,6 +3,7 @@ import { Layout } from "lucide-react";
 import { UserCircle } from "lucide-react";
 import { BookOpen } from "lucide-react";
 import { Newspaper } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const features = [
@@ -45,6 +46,10 @@ const HomePage = () => {
         <div className="flex items-center justify-center mb-12">
           <Layout className="w-12 h-12 text-white mr-4" />
           <h1 className="text-4xl font-bold text-white">Central Hub</h1>
+        </div>
+
+        <div>
+          <Link to="/login" className="button" >Login</Link>
         </div>
 
         {/* Feature Grid */}
