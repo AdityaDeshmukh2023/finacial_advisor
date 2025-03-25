@@ -23,6 +23,7 @@ import SuccessStories from "./Pages/SuccessStoriesAvi";
 import QASessions from "./Pages/qna";
 import LoginPage from "./Pages/Login";
 import RegistrationPage from "./Pages/Signup";
+import FinancialAdvisorChatbotUi from "./Pages/financialAdvisiorChatbotUi";
 
 import ProtectedRoute from "./components/protected-route";
 
@@ -41,6 +42,8 @@ function App() {
         <Route path="/learn" element={<ProtectedRoute><LearningCenter /></ProtectedRoute>} />
 
         <Route path="/profiles" element={<UserProfile />} />
+
+        <Route path="/advisor" element={<ProtectedRoute><FinancialAdvisorChatbotUi /></ProtectedRoute>} />
 
         <Route path="/road" element={<ProtectedRoute><VerticalRoadmap /></ProtectedRoute>} />
         <Route path="/shorts" element={<ProtectedRoute><YouTubeShorts /></ProtectedRoute>} />
