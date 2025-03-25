@@ -102,7 +102,7 @@ const RegistrationPage = () => {
       encType="multipart/form-data"
       className="max-w-3xl mx-auto mt-16 p-8 bg-gray-100 shadow-md rounded-lg"
     >
-      <h2 className="text-3xl font-bold mb-6 text-center">Gym Registration</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center"> FinAdvice</h2>
 
       <InputField
         label="Name"
