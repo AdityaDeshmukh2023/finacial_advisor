@@ -328,7 +328,7 @@ const VideoSection = () => {
       </video>
       <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
         <h2 className="text-4xl font-bold text-white text-center">
-          Experience Financial Freedom
+          
         </h2>
       </div>
     </section>
@@ -340,13 +340,9 @@ const LandingPage = () => {
   const t = translations[language];
   const navigate = useNavigate();
 
-  const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "en" ? "hi" : "en"));
-  };
-
   return (
     <div className="min-h-screen bg-[#F3F4F6]">
-      <SimpleNavBar language={language} toggleLanguage={toggleLanguage} />
+      <SimpleNavBar language={language} toggleLanguage={() => setLanguage((prev) => (prev === "en" ? "hi" : "en"))} />
       <header className="text-center py-24 bg-[#1E3A8A] text-white">
         <h1 className="text-4xl font-bold">{t.hero.title}</h1>
         <p className="mt-4">{t.hero.subtitle}</p>
@@ -364,7 +360,7 @@ const LandingPage = () => {
         <p className="mt-2 text-[#1F2937]">{t.businessIdeas.subtitle}</p>
         <BusinessIdeasScroll ideas={t.businessIdeas.ideas} />
       </section>
-      <VideoSection /> {/* Add Video Section */}
+      <VideoSection /> {/* Updated Video Section */}
       <section className="py-12 bg-[#E5E7EB]">
         <h2 className="text-2xl font-bold text-[#1E3A8A] text-center">
           {t.successStories.title}
