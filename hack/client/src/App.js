@@ -28,6 +28,8 @@ import RegistrationPage from "./Pages/Signup";
 import ProtectedRoute from "./components/protected-route"; 
 
 import FinancialAdvisorChatbotUi from "./Pages/financialAdvisiorChatBotUi";
+import LandingPage from "./Pages/Landingpage";  
+
 
 
 function App() {
@@ -63,6 +65,8 @@ function App() {
         <Route path="/qna" element={<ProtectedRoute><QASessions /></ProtectedRoute>} />
 
         <Route path="/advisor" element={<ProtectedRoute><FinancialAdvisorChatbotUi /></ProtectedRoute>} />
+        <Route path="/LandingPage" element={<LandingPage />} />
+        
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>

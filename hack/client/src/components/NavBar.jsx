@@ -3,12 +3,15 @@ import { Menu, X, Globe, BadgeDollarSign } from "lucide-react";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
 
-const NavBar = ({ language, toggleLanguage }) => {
+const NavBar = ({ children, language, toggleLanguage }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLoginCLick =() =>{
     <Navigate to="/login" />
   }
+
+  // Ensure language is defined before using it
+  const lang = language ? language.toUpperCase() : "EN";
 
   return (
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-sm z-50">
@@ -68,7 +71,7 @@ const NavBar = ({ language, toggleLanguage }) => {
               className="flex items-center text-green-800 hover:text-green-600 transition-colors"
             >
               <Globe className="h-4 w-4 mr-1" />
-              {language.toUpperCase()}
+              {lang}
             </button>
             
              {/* Show User Profile Button if signed in */}
@@ -124,7 +127,7 @@ const NavBar = ({ language, toggleLanguage }) => {
               className="flex items-center px-3 py-2 text-green-800 hover:bg-green-50 rounded-md w-full"
             >
               <Globe className="h-4 w-4 mr-1" />
-              {language.toUpperCase()}
+              {lang}
             </button>
           </div>
         </div>
