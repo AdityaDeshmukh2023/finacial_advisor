@@ -33,7 +33,7 @@ const NavBar = ({ language, toggleLanguage }) => {
               href="/ppf"
               className="text-green-800 hover:text-green-600 transition-colors"
             >
-              PPF
+              FinCalculators
             </a>
             <a
               href="/schemes"

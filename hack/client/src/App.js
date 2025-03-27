@@ -10,7 +10,7 @@ import YouTubeShorts from "./components/Shorts";
 import FinancialAdvisor from "./Pages/Heropage";
 import ErrorPage from "./components/ErrorPage";
 import GovernmentSchemes from "./Pages/GovernmentScheme";
-import PPFCalculator from "./Pages/PpfCalculator";
+import PPFCalculator from "./Pages/FinancialCalculatorsDashboard";
 import WomenEmpowerment from "./Pages/WomensSection";
 import ChatbotButton from "./components/ChatbobtButton";
 import MicroinvestmentPlatform from "./Pages/mip";
@@ -46,15 +46,15 @@ function App() {
 
         {/* <Route path="/profiles" element={<UserProfile />} /> */}
 
-        <Route path="/road" element={<ProtectedRoute><VerticalRoadmap /></ProtectedRoute>} />
+        <Route path="/road" element={<VerticalRoadmap />} />
         <Route path="/shorts" element={<ProtectedRoute><YouTubeShorts /></ProtectedRoute>} />
-        <Route path="/scheme" element={<ProtectedRoute><GovernmentSchemes /></ProtectedRoute>} />
-        <Route path="/ppf" element={<ProtectedRoute><PPFCalculator /></ProtectedRoute>} />
+        <Route path="/scheme" element={<GovernmentSchemes />} />
+        <Route path="/ppf" element={<PPFCalculator /> }/>
         <Route path="/womens" element={<ProtectedRoute><WomenEmpowerment /></ProtectedRoute>} />
         <Route path="/mip" element={<ProtectedRoute><MicroinvestmentPlatform /></ProtectedRoute>} />
         <Route path="/poultry" element={<ProtectedRoute><PoultryFarmGuide /></ProtectedRoute>} />
-        <Route path="/rural" element={<ProtectedRoute><RuralBusinessOpportunities /></ProtectedRoute>} />
-        <Route path="/community" element={<ProtectedRoute><DiscussionForums /></ProtectedRoute>} />
+        <Route path="/rural" element={<RuralBusinessOpportunities />} />
+        <Route path="/community" element={<DiscussionForums />} />
 
         <Route path="/chatbot" element={<Chatbot />} />        
         <Route path="/dairy" element={<DairyForumPage />} />
@@ -62,7 +62,7 @@ function App() {
         
         <Route path="/qna" element={<ProtectedRoute><QASessions /></ProtectedRoute>} />
 
-        <Route path="/advisor" element={<ProtectedRoute><FinancialAdvisorChatbotUi /></ProtectedRoute>} />
+        <Route path="/advisor" element={<FinancialAdvisorChatbotUi />} />
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>

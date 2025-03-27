@@ -13,85 +13,60 @@ import {
   CartesianGrid
 } from "recharts";
 import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
 
-const PPFCalculator = () => {
-  const [yearlyInvestment, setYearlyInvestment] = useState(10000);
-  const [timePeriod, setTimePeriod] = useState(15);
-  const [rateOfInterest, setRateOfInterest] = useState(7.1);
+const SIPCalculator = () => {
+  const [monthlyInvestment, setMonthlyInvestment] = useState(5000);
+  const [timePeriod, setTimePeriod] = useState(10);
+  const [expectedReturn, setExpectedReturn] = useState(12);
   const [results, setResults] = useState({
-    investedAmount: 0,
+    totalInvested: 0,
     totalInterest: 0,
     maturityValue: 0,
     yearlyBreakdown: [],
-    taxSavings: 0
   });
   const [language, setLanguage] = useState("en");
   const [comparisonScenarios, setComparisonScenarios] = useState([]);
 
-  // Tax Slab Rates (Simplified for example)
-  const taxSlabs = [
-    { range: [0, 250000], rate: 0 },
-    { range: [250001, 500000], rate: 5 },
-    { range: [500001, 1000000], rate: 20 },
-    { range: [1000001, Infinity], rate: 30 }
-  ];
+  // Enhanced SIP Calculation with Yearly Breakdown
+  const calculateSIP = () => {
+    const P = monthlyInvestment;
+    const r = expectedReturn / 100 / 12;  // Monthly interest rate
+    const n = timePeriod * 12;  // Total number of months
 
-  // Enhanced Calculation with Yearly Breakdown and Tax Savings
-  const calculatePPF = () => {
-    const P = yearlyInvestment;
-    const r = rateOfInterest / 100;
-    const n = timePeriod;
-
+    // Future Value of SIP Formula
     const maturityValue = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-    const investedAmount = P * n;
-    const totalInterest = maturityValue - investedAmount;
+    const totalInvested = P * n;
+    const totalInterest = maturityValue - totalInvested;
 
-    // Yearly Breakdown for Interactive Visualization
-    const yearlyBreakdown = Array.from({ length: n }, (_, year) => {
-      const yearlyInvested = P;
-      const compoundInterest = P * Math.pow(1 + r, year + 1) - P;
+    // Yearly Breakdown
+    const yearlyBreakdown = Array.from({ length: timePeriod }, (_, year) => {
+      const yearlyInvested = P * 12;
+      const yearlyInvestedTotal = yearlyInvested * (year + 1);
+      const yearlyCompoundValue = yearlyInvestedTotal * Math.pow(1 + r, (timePeriod - year) * 12);
+      
       return {
         year: year + 1,
-        invested: yearlyInvested,
-        interest: Math.round(compoundInterest),
-        totalValue: Math.round(P * Math.pow(1 + r, year + 1))
+        invested: Math.round(yearlyInvested),
+        totalInvested: Math.round(yearlyInvestedTotal),
+        currentValue: Math.round(yearlyCompoundValue)
       };
     });
 
-    // Tax Savings Calculation (Simplified)
-    const taxSavingsAmount = calculateTaxSavings(investedAmount);
-
     setResults({
-      investedAmount: investedAmount,
+      totalInvested: Math.round(totalInvested),
       totalInterest: Math.round(totalInterest),
       maturityValue: Math.round(maturityValue),
-      yearlyBreakdown: yearlyBreakdown,
-      taxSavings: taxSavingsAmount
+      yearlyBreakdown: yearlyBreakdown
     });
-  };
-
-  // Calculate Tax Savings
-  const calculateTaxSavings = (investedAmount) => {
-    // Assume maximum deduction under Section 80C
-    const maxDeduction = 150000;
-    const deductionAmount = Math.min(investedAmount, maxDeduction);
-
-    // Find applicable tax slab
-    const applicableSlab = taxSlabs.find(
-      slab => deductionAmount >= slab.range[0] && deductionAmount <= slab.range[1]
-    );
-
-    return Math.round((deductionAmount * applicableSlab.rate) / 100);
   };
 
   // Add Comparison Scenario
   const addComparisonScenario = () => {
     const newScenario = {
       id: Date.now(),
-      investment: yearlyInvestment,
+      monthlyInvestment: monthlyInvestment,
       period: timePeriod,
-      interestRate: rateOfInterest,
+      expectedReturn: expectedReturn,
       maturityValue: results.maturityValue,
       totalInterest: results.totalInterest
     };
@@ -107,11 +82,11 @@ const PPFCalculator = () => {
   };
 
   useEffect(() => {
-    calculatePPF();
-  }, [yearlyInvestment, timePeriod, rateOfInterest]);
+    calculateSIP();
+  }, [monthlyInvestment, timePeriod, expectedReturn]);
 
   const chartData = [
-    { name: "Total Investment", value: results.investedAmount },
+    { name: "Total Investment", value: results.totalInvested },
     { name: "Total Interest", value: results.totalInterest },
   ];
 
@@ -121,45 +96,45 @@ const PPFCalculator = () => {
     <>
       <NavBar language={language} toggleLanguage={() => {}} />
       
-      <div className="mx-auto p-6 space-y-8 bg-gradient-to-tr from-green-300 to-green-50 min-h-screen">
+      <div className="mx-auto p-6 space-y-8 bg-gradient-to-tr from-blue-300 to-blue-50 min-h-screen">
         <div className="bg-white bg-opacity-90 rounded-xl shadow-lg p-6 space-y-6 mt-16">
-          <h2 className="text-2xl font-bold text-gray-800">PPF Calculator</h2>
+          <h2 className="text-2xl font-bold text-gray-800">SIP Calculator</h2>
 
           {/* Maturity Value Display */}
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">
               Projected Maturity Value
             </h3>
-            <p className="text-3xl font-bold text-green-600">
+            <p className="text-3xl font-bold text-blue-600">
               ₹{results.maturityValue.toLocaleString()}
             </p>
             <p className="text-sm text-gray-500 mt-2">
-              For ₹{yearlyInvestment.toLocaleString()} invested yearly at {rateOfInterest}% for {timePeriod} years
+              For ₹{monthlyInvestment.toLocaleString()} invested monthly at {expectedReturn}% for {timePeriod} years
             </p>
           </div>
 
           {/* Input Sections */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {/* Yearly Investment Slider */}
+            {/* Monthly Investment Slider */}
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <span className="text-blue-500 text-xl">💳</span>
+                <span className="text-blue-500 text-xl">💰</span>
                 <label className="text-gray-700 font-semibold">
-                  Yearly Investment
+                  Monthly Investment
                 </label>
               </div>
               <div className="flex items-center space-x-4">
                 <input
                   type="range"
                   min="500"
-                  max="150000"
+                  max="50000"
                   step="500"
-                  value={yearlyInvestment}
-                  onChange={(e) => setYearlyInvestment(Number(e.target.value))}
-                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-green-500"
+                  value={monthlyInvestment}
+                  onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-blue-500"
                 />
-                <span className="bg-green-50 text-green-600 px-4 py-2 rounded-md min-w-[120px] text-center">
-                  ₹{yearlyInvestment.toLocaleString()}
+                <span className="bg-blue-50 text-blue-600 px-4 py-2 rounded-md min-w-[120px] text-center">
+                  ₹{monthlyInvestment.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -169,13 +144,13 @@ const PPFCalculator = () => {
               <div className="flex items-center space-x-3">
                 <span className="text-green-500 text-xl">⏰</span>
                 <label className="text-gray-700 font-semibold">
-                  Time Period (Years)
+                  Investment Period (Years)
                 </label>
               </div>
               <div className="flex items-center space-x-4">
                 <input
                   type="range"
-                  min="15"
+                  min="3"
                   max="30"
                   step="1"
                   value={timePeriod}
@@ -188,26 +163,26 @@ const PPFCalculator = () => {
               </div>
             </div>
 
-            {/* Interest Rate Slider */}
+            {/* Expected Return Slider */}
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <span className="text-purple-500 text-xl">%</span>
                 <label className="text-gray-700 font-semibold">
-                  Interest Rate
+                  Expected Return
                 </label>
               </div>
               <div className="flex items-center space-x-4">
                 <input
                   type="range"
                   min="6"
-                  max="9"
-                  step="0.1"
-                  value={rateOfInterest}
-                  onChange={(e) => setRateOfInterest(Number(e.target.value))}
+                  max="20"
+                  step="0.5"
+                  value={expectedReturn}
+                  onChange={(e) => setExpectedReturn(Number(e.target.value))}
                   className="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer accent-green-500"
                 />
                 <span className="bg-gray-100 text-gray-600 px-4 py-2 rounded-md min-w-[120px] text-center">
-                  {rateOfInterest.toFixed(1)}%
+                  {expectedReturn.toFixed(1)}%
                 </span>
               </div>
             </div>
@@ -218,7 +193,7 @@ const PPFCalculator = () => {
             <div className="bg-blue-50 p-4 rounded-lg">
               <h3 className="text-sm font-medium text-blue-700 mb-1">Total Investment</h3>
               <p className="text-xl font-bold text-blue-800">
-                ₹{results.investedAmount.toLocaleString()}
+                ₹{results.totalInvested.toLocaleString()}
               </p>
             </div>
             <div className="bg-green-50 p-4 rounded-lg">
@@ -228,9 +203,9 @@ const PPFCalculator = () => {
               </p>
             </div>
             <div className="bg-purple-50 p-4 rounded-lg">
-              <h3 className="text-sm font-medium text-purple-700 mb-1">Tax Savings</h3>
+              <h3 className="text-sm font-medium text-purple-700 mb-1">Returns Multiple</h3>
               <p className="text-xl font-bold text-purple-800">
-                ₹{results.taxSavings.toLocaleString()}
+                {(results.maturityValue / results.totalInvested).toFixed(2)}x
               </p>
             </div>
           </div>
@@ -241,7 +216,7 @@ const PPFCalculator = () => {
               <h3 className="text-lg font-semibold">Scenario Comparison</h3>
               <button 
                 onClick={addComparisonScenario}
-                className="bg-green-500 text-white px-3 py-1 rounded text-sm"
+                className="bg-blue-500 text-white px-3 py-1 rounded text-sm"
               >
                 Add Scenario
               </button>
@@ -250,9 +225,9 @@ const PPFCalculator = () => {
               <table className="w-full">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="p-2">Yearly Investment</th>
+                    <th className="p-2">Monthly Investment</th>
                     <th className="p-2">Time Period</th>
-                    <th className="p-2">Interest Rate</th>
+                    <th className="p-2">Return Rate</th>
                     <th className="p-2">Maturity Value</th>
                     <th className="p-2">Actions</th>
                   </tr>
@@ -260,9 +235,9 @@ const PPFCalculator = () => {
                 <tbody>
                   {comparisonScenarios.map((scenario) => (
                     <tr key={scenario.id} className="border-b">
-                      <td className="p-2 text-center">₹{scenario.investment}</td>
+                      <td className="p-2 text-center">₹{scenario.monthlyInvestment}</td>
                       <td className="p-2 text-center">{scenario.period} Years</td>
-                      <td className="p-2 text-center">{scenario.interestRate}%</td>
+                      <td className="p-2 text-center">{scenario.expectedReturn}%</td>
                       <td className="p-2 text-center">
                         ₹{scenario.maturityValue.toLocaleString()}
                       </td>
@@ -336,13 +311,13 @@ const PPFCalculator = () => {
                     dataKey="invested" 
                     stackId="a" 
                     fill="#2563EB" 
-                    name="Principal" 
+                    name="Yearly Investment" 
                   />
                   <Bar 
-                    dataKey="interest" 
+                    dataKey="currentValue" 
                     stackId="a" 
                     fill="#10B981" 
-                    name="Interest" 
+                    name="Current Value" 
                   />
                 </BarChart>
               </ResponsiveContainer>
@@ -350,9 +325,8 @@ const PPFCalculator = () => {
           </div>
         </div>
       </div>      
-      {/* <Footer /> */}
     </>
   );
 };
 
-export default PPFCalculator;
+export default SIPCalculator;

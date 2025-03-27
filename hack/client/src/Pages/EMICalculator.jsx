@@ -13,86 +13,71 @@ import {
   CartesianGrid
 } from "recharts";
 import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
 
-const PPFCalculator = () => {
-  const [yearlyInvestment, setYearlyInvestment] = useState(10000);
-  const [timePeriod, setTimePeriod] = useState(15);
-  const [rateOfInterest, setRateOfInterest] = useState(7.1);
+const EMICalculator = () => {
+  const [principalAmount, setPrincipalAmount] = useState(1000000);
+  const [interestRate, setInterestRate] = useState(8.5);
+  const [loanTenure, setLoanTenure] = useState(15);
   const [results, setResults] = useState({
-    investedAmount: 0,
+    monthlyEMI: 0,
     totalInterest: 0,
-    maturityValue: 0,
+    totalPayment: 0,
     yearlyBreakdown: [],
-    taxSavings: 0
   });
   const [language, setLanguage] = useState("en");
   const [comparisonScenarios, setComparisonScenarios] = useState([]);
 
-  // Tax Slab Rates (Simplified for example)
-  const taxSlabs = [
-    { range: [0, 250000], rate: 0 },
-    { range: [250001, 500000], rate: 5 },
-    { range: [500001, 1000000], rate: 20 },
-    { range: [1000001, Infinity], rate: 30 }
-  ];
+  // EMI Calculation with Detailed Breakdown
+  const calculateEMI = () => {
+    const P = principalAmount;
+    const r = interestRate / 12 / 100;  // Monthly interest rate
+    const n = loanTenure * 12;  // Total number of months
 
-  // Enhanced Calculation with Yearly Breakdown and Tax Savings
-  const calculatePPF = () => {
-    const P = yearlyInvestment;
-    const r = rateOfInterest / 100;
-    const n = timePeriod;
+    // EMI Calculation Formula
+    const monthlyEMI = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+    const totalPayment = monthlyEMI * n;
+    const totalInterest = totalPayment - P;
 
-    const maturityValue = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-    const investedAmount = P * n;
-    const totalInterest = maturityValue - investedAmount;
+    // Yearly Breakdown
+    const yearlyBreakdown = Array.from({ length: loanTenure }, (_, year) => {
+      let yearlyInterest = 0;
+      let yearlyPrincipal = 0;
+      let remainingPrincipal = P;
 
-    // Yearly Breakdown for Interactive Visualization
-    const yearlyBreakdown = Array.from({ length: n }, (_, year) => {
-      const yearlyInvested = P;
-      const compoundInterest = P * Math.pow(1 + r, year + 1) - P;
+      // Calculate yearly interest and principal for each year
+      for (let month = 0; month < 12; month++) {
+        const monthlyInterest = remainingPrincipal * r;
+        const monthlyPrincipal = monthlyEMI - monthlyInterest;
+
+        yearlyInterest += monthlyInterest;
+        yearlyPrincipal += monthlyPrincipal;
+        remainingPrincipal -= monthlyPrincipal;
+      }
+
       return {
         year: year + 1,
-        invested: yearlyInvested,
-        interest: Math.round(compoundInterest),
-        totalValue: Math.round(P * Math.pow(1 + r, year + 1))
+        principalPaid: Math.round(yearlyPrincipal),
+        interestPaid: Math.round(yearlyInterest),
+        remainingPrincipal: Math.round(remainingPrincipal)
       };
     });
 
-    // Tax Savings Calculation (Simplified)
-    const taxSavingsAmount = calculateTaxSavings(investedAmount);
-
     setResults({
-      investedAmount: investedAmount,
+      monthlyEMI: Math.round(monthlyEMI),
       totalInterest: Math.round(totalInterest),
-      maturityValue: Math.round(maturityValue),
-      yearlyBreakdown: yearlyBreakdown,
-      taxSavings: taxSavingsAmount
+      totalPayment: Math.round(totalPayment),
+      yearlyBreakdown: yearlyBreakdown
     });
-  };
-
-  // Calculate Tax Savings
-  const calculateTaxSavings = (investedAmount) => {
-    // Assume maximum deduction under Section 80C
-    const maxDeduction = 150000;
-    const deductionAmount = Math.min(investedAmount, maxDeduction);
-
-    // Find applicable tax slab
-    const applicableSlab = taxSlabs.find(
-      slab => deductionAmount >= slab.range[0] && deductionAmount <= slab.range[1]
-    );
-
-    return Math.round((deductionAmount * applicableSlab.rate) / 100);
   };
 
   // Add Comparison Scenario
   const addComparisonScenario = () => {
     const newScenario = {
       id: Date.now(),
-      investment: yearlyInvestment,
-      period: timePeriod,
-      interestRate: rateOfInterest,
-      maturityValue: results.maturityValue,
+      principalAmount: principalAmount,
+      interestRate: interestRate,
+      loanTenure: loanTenure,
+      monthlyEMI: results.monthlyEMI,
       totalInterest: results.totalInterest
     };
 
@@ -107,11 +92,11 @@ const PPFCalculator = () => {
   };
 
   useEffect(() => {
-    calculatePPF();
-  }, [yearlyInvestment, timePeriod, rateOfInterest]);
+    calculateEMI();
+  }, [principalAmount, interestRate, loanTenure]);
 
   const chartData = [
-    { name: "Total Investment", value: results.investedAmount },
+    { name: "Principal Amount", value: principalAmount },
     { name: "Total Interest", value: results.totalInterest },
   ];
 
@@ -121,69 +106,45 @@ const PPFCalculator = () => {
     <>
       <NavBar language={language} toggleLanguage={() => {}} />
       
-      <div className="mx-auto p-6 space-y-8 bg-gradient-to-tr from-green-300 to-green-50 min-h-screen">
+      <div className="mx-auto p-6 space-y-8 bg-gradient-to-tr from-purple-300 to-purple-50 min-h-screen">
         <div className="bg-white bg-opacity-90 rounded-xl shadow-lg p-6 space-y-6 mt-16">
-          <h2 className="text-2xl font-bold text-gray-800">PPF Calculator</h2>
+          <h2 className="text-2xl font-bold text-gray-800">EMI Calculator</h2>
 
-          {/* Maturity Value Display */}
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
+          {/* Monthly EMI Display */}
+          <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 text-center">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">
-              Projected Maturity Value
+              Monthly EMI
             </h3>
-            <p className="text-3xl font-bold text-green-600">
-              ₹{results.maturityValue.toLocaleString()}
+            <p className="text-3xl font-bold text-purple-600">
+              ₹{results.monthlyEMI.toLocaleString()}
             </p>
             <p className="text-sm text-gray-500 mt-2">
-              For ₹{yearlyInvestment.toLocaleString()} invested yearly at {rateOfInterest}% for {timePeriod} years
+              For ₹{principalAmount.toLocaleString()} loan at {interestRate}% for {loanTenure} years
             </p>
           </div>
 
           {/* Input Sections */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {/* Yearly Investment Slider */}
+            {/* Principal Amount Slider */}
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <span className="text-blue-500 text-xl">💳</span>
+                <span className="text-blue-500 text-xl">💸</span>
                 <label className="text-gray-700 font-semibold">
-                  Yearly Investment
+                  Loan Amount
                 </label>
               </div>
               <div className="flex items-center space-x-4">
                 <input
                   type="range"
-                  min="500"
-                  max="150000"
-                  step="500"
-                  value={yearlyInvestment}
-                  onChange={(e) => setYearlyInvestment(Number(e.target.value))}
-                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-green-500"
+                  min="100000"
+                  max="10000000"
+                  step="100000"
+                  value={principalAmount}
+                  onChange={(e) => setPrincipalAmount(Number(e.target.value))}
+                  className="w-full h-2 bg-blue-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
                 />
-                <span className="bg-green-50 text-green-600 px-4 py-2 rounded-md min-w-[120px] text-center">
-                  ₹{yearlyInvestment.toLocaleString()}
-                </span>
-              </div>
-            </div>
-
-            {/* Time Period Slider */}
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <span className="text-green-500 text-xl">⏰</span>
-                <label className="text-gray-700 font-semibold">
-                  Time Period (Years)
-                </label>
-              </div>
-              <div className="flex items-center space-x-4">
-                <input
-                  type="range"
-                  min="15"
-                  max="30"
-                  step="1"
-                  value={timePeriod}
-                  onChange={(e) => setTimePeriod(Number(e.target.value))}
-                  className="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer accent-green-500"
-                />
-                <span className="bg-green-50 text-green-600 px-4 py-2 rounded-md min-w-[120px] text-center">
-                  {timePeriod} Yr
+                <span className="bg-blue-50 text-blue-600 px-4 py-2 rounded-md min-w-[120px] text-center">
+                  ₹{principalAmount.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -191,7 +152,7 @@ const PPFCalculator = () => {
             {/* Interest Rate Slider */}
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <span className="text-purple-500 text-xl">%</span>
+                <span className="text-green-500 text-xl">%</span>
                 <label className="text-gray-700 font-semibold">
                   Interest Rate
                 </label>
@@ -199,15 +160,39 @@ const PPFCalculator = () => {
               <div className="flex items-center space-x-4">
                 <input
                   type="range"
-                  min="6"
-                  max="9"
-                  step="0.1"
-                  value={rateOfInterest}
-                  onChange={(e) => setRateOfInterest(Number(e.target.value))}
-                  className="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer accent-green-500"
+                  min="5"
+                  max="15"
+                  step="0.5"
+                  value={interestRate}
+                  onChange={(e) => setInterestRate(Number(e.target.value))}
+                  className="w-full h-2 bg-green-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                />
+                <span className="bg-green-50 text-green-600 px-4 py-2 rounded-md min-w-[120px] text-center">
+                  {interestRate.toFixed(1)}%
+                </span>
+              </div>
+            </div>
+
+            {/* Loan Tenure Slider */}
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <span className="text-purple-500 text-xl">⏰</span>
+                <label className="text-gray-700 font-semibold">
+                  Loan Tenure
+                </label>
+              </div>
+              <div className="flex items-center space-x-4">
+                <input
+                  type="range"
+                  min="1"
+                  max="30"
+                  step="1"
+                  value={loanTenure}
+                  onChange={(e) => setLoanTenure(Number(e.target.value))}
+                  className="w-full h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer accent-purple-500"
                 />
                 <span className="bg-gray-100 text-gray-600 px-4 py-2 rounded-md min-w-[120px] text-center">
-                  {rateOfInterest.toFixed(1)}%
+                  {loanTenure} Yr
                 </span>
               </div>
             </div>
@@ -216,9 +201,9 @@ const PPFCalculator = () => {
           {/* Key Results Summary */}
           <div className="grid md:grid-cols-3 gap-4 mb-6">
             <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="text-sm font-medium text-blue-700 mb-1">Total Investment</h3>
+              <h3 className="text-sm font-medium text-blue-700 mb-1">Monthly EMI</h3>
               <p className="text-xl font-bold text-blue-800">
-                ₹{results.investedAmount.toLocaleString()}
+                ₹{results.monthlyEMI.toLocaleString()}
               </p>
             </div>
             <div className="bg-green-50 p-4 rounded-lg">
@@ -228,9 +213,9 @@ const PPFCalculator = () => {
               </p>
             </div>
             <div className="bg-purple-50 p-4 rounded-lg">
-              <h3 className="text-sm font-medium text-purple-700 mb-1">Tax Savings</h3>
+              <h3 className="text-sm font-medium text-purple-700 mb-1">Total Payment</h3>
               <p className="text-xl font-bold text-purple-800">
-                ₹{results.taxSavings.toLocaleString()}
+                ₹{results.totalPayment.toLocaleString()}
               </p>
             </div>
           </div>
@@ -241,7 +226,7 @@ const PPFCalculator = () => {
               <h3 className="text-lg font-semibold">Scenario Comparison</h3>
               <button 
                 onClick={addComparisonScenario}
-                className="bg-green-500 text-white px-3 py-1 rounded text-sm"
+                className="bg-purple-500 text-white px-3 py-1 rounded text-sm"
               >
                 Add Scenario
               </button>
@@ -250,21 +235,21 @@ const PPFCalculator = () => {
               <table className="w-full">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="p-2">Yearly Investment</th>
-                    <th className="p-2">Time Period</th>
+                    <th className="p-2">Loan Amount</th>
                     <th className="p-2">Interest Rate</th>
-                    <th className="p-2">Maturity Value</th>
+                    <th className="p-2">Loan Tenure</th>
+                    <th className="p-2">Monthly EMI</th>
                     <th className="p-2">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {comparisonScenarios.map((scenario) => (
                     <tr key={scenario.id} className="border-b">
-                      <td className="p-2 text-center">₹{scenario.investment}</td>
-                      <td className="p-2 text-center">{scenario.period} Years</td>
+                      <td className="p-2 text-center">₹{scenario.principalAmount.toLocaleString()}</td>
                       <td className="p-2 text-center">{scenario.interestRate}%</td>
+                      <td className="p-2 text-center">{scenario.loanTenure} Years</td>
                       <td className="p-2 text-center">
-                        ₹{scenario.maturityValue.toLocaleString()}
+                        ₹{scenario.monthlyEMI.toLocaleString()}
                       </td>
                       <td className="p-2 text-center">
                         <button 
@@ -333,16 +318,16 @@ const PPFCalculator = () => {
                     formatter={(value) => `₹${value.toLocaleString()}`}
                   />
                   <Bar 
-                    dataKey="invested" 
+                    dataKey="principalPaid" 
                     stackId="a" 
                     fill="#2563EB" 
-                    name="Principal" 
+                    name="Principal Paid" 
                   />
                   <Bar 
-                    dataKey="interest" 
+                    dataKey="interestPaid" 
                     stackId="a" 
                     fill="#10B981" 
-                    name="Interest" 
+                    name="Interest Paid" 
                   />
                 </BarChart>
               </ResponsiveContainer>
@@ -350,9 +335,8 @@ const PPFCalculator = () => {
           </div>
         </div>
       </div>      
-      {/* <Footer /> */}
     </>
   );
 };
 
-export default PPFCalculator;
+export default EMICalculator;
