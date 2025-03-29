@@ -485,7 +485,7 @@ const BusinessIdeasScroll = ({ ideas }) => {
         // Reset scroll position to the start if at the end
         if (
           container.scrollLeft + container.clientWidth >=
-          container.scrollWidth
+          container.scrollWidth   
         ) {
           container.scrollTo({ left: 0 });
         }
@@ -496,7 +496,7 @@ const BusinessIdeasScroll = ({ ideas }) => {
   }, []);
 
   return (
-    <div className="relative max-w-7xl mx-auto">
+    <div className="relative max-w-7xl mx-auto">  
       {/* Left blur gradient */}
       <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-br from-green-50 to-white z-10"></div>
 
@@ -516,7 +516,7 @@ const BusinessIdeasScroll = ({ ideas }) => {
         {/* Double the items for seamless infinite scroll */}
         {[...ideas, ...ideas].map((idea, index) => (
           <div
-            key={index}
+            key={index}  
             className="flex-none w-72 bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
           >
             <span className="text-4xl mb-4 block">{idea.icon}</span>
@@ -580,3 +580,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+   
