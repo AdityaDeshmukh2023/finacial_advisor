@@ -42,7 +42,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/news" element={<ProtectedRoute><NewsPage /></ProtectedRoute>} />
-        <Route path="/learn" element={<ProtectedRoute><LearningCenter /></ProtectedRoute>} />
+        <Route path="/learn" element={<LearningCenter />} />
 
         {/* <Route path="/profiles" element={<UserProfile />} /> */}
 
@@ -51,7 +51,7 @@ function App() {
         <Route path="/scheme" element={<GovernmentSchemes />} />
         <Route path="/ppf" element={<PPFCalculator /> }/>
         <Route path="/womens" element={<ProtectedRoute><WomenEmpowerment /></ProtectedRoute>} />
-        <Route path="/mip" element={<ProtectedRoute><MicroinvestmentPlatform /></ProtectedRoute>} />
+        <Route path="/mip" element={<MicroinvestmentPlatform />} />
         <Route path="/poultry" element={<ProtectedRoute><PoultryFarmGuide /></ProtectedRoute>} />
         <Route path="/rural" element={<RuralBusinessOpportunities />} />
         <Route path="/community" element={<DiscussionForums />} />
