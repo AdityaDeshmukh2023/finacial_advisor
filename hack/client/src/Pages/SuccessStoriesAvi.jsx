@@ -16,30 +16,30 @@ const SuccessStories = () => {
   const [filterCriteria, setFilterCriteria] = useState("all"); // Default filter
   const [videoUrl, setVideoUrl] = useState(null); // State for video URL
 
-  const stories = [
-    {
-      id: 1,
-      title: "Success sweet like Honey",
-      author: "Avishkar Ghodke",
-      region: "Gujarat",
-      sector: "farming",
-      challenge: "loan-application",
-      thumbnail: man2,
-      views: 1234,                       
-      likes: 456,
-      date: "March 15, 2025",
-      summary:
-        "How I transformed my 1-acre farm into a successful beekeeping business",
-      fullStory:
-        "Avishkar faced financial difficulties but found innovative ways to sustain beekeeping. By optimizing hive placements and improving honey extraction, he achieved remarkable success.",
-      keyLessons: [
-        "Optimizing hive placement for higher yield",
-        "Identifying and preventing common bee diseases",
-        "Innovative techniques for honey extraction",
-      ],
-      hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    },
+  const stories = [{
+    id: 1,
+    title: "Success sweet like Honey",
+    author: "Avishkar Ghodke",
+    region: "Gujarat",
+    sector: "farming",
+    challenge: "loan-application",
+    thumbnail: man2,
+    views: 1234,
+    likes: 456,
+    date: "March 15, 2025",
+    summary:
+      "How I transformed my 1-acre farm into a successful beekeeping business",
+    fullStory:
+      "Avishkar faced financial difficulties but found innovative ways to sustain beekeeping. By optimizing hive placements and improving honey extraction, he achieved remarkable success.",
+    keyLessons: [
+      "Optimizing hive placement for higher yield",
+      "Identifying and preventing common bee diseases",
+      "Innovative techniques for honey extraction",
+    ],
+    hasVideo: true,
+    videoUrl: "https://www.youtube.com/embed/zMZ6IBCQCm8?si=XqjOE1n3z8Fo5QVK", // Corrected video URL
+  },
+    
     {
       id: 2,
       title: "Building a Women's Dairy Cooperative",
@@ -60,7 +60,7 @@ const SuccessStories = () => {
         "Effective quality control systems",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/3JZ_D3ELwOQ",
+      videoUrl: "https://www.youtube.com/embed/CDU-3XEwsAw?si=ptPCwePBhwvGA3Oc",
     },
     {
       id: 3,
@@ -83,7 +83,7 @@ const SuccessStories = () => {
         "International shipping logistics",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/3JZ_D3ELwOQ",
+      videoUrl: "https://www.youtube.com/embed/7CCjkqSpSz8?si=24HxB6qC-bO1jmPM",
     },
     {
       id: 4,
@@ -105,7 +105,7 @@ const SuccessStories = () => {
         "Simple techniques for rainwater harvesting",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/7s8d9f8s",
+      videoUrl: "https://www.youtube.com/embed/-evivoRwUZw?si=7Es1H7NKRKhK21SD",
     },
     {
       id: 5,
@@ -127,7 +127,7 @@ const SuccessStories = () => {
         "Effective training programs for skill development",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/9s8d9f8s",
+      videoUrl: "https://www.youtube.com/embed/oniEpiAr9-8?si=ssKdtaDh0LV43yID",
     },
     {
       id: 6,
@@ -149,7 +149,7 @@ const SuccessStories = () => {
         "Market access for organic products",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/4s8d9f8s",
+      videoUrl: "https://www.youtube.com/embed/bPXA8fDcPFE?si=QgUZf500oamSajOO",
     },
     {
       id: 7,
@@ -171,7 +171,7 @@ const SuccessStories = () => {
         "Community impact of renewable energy",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/5s8d9f8s",
+      videoUrl: "https://www.youtube.com/embed/6EUaXRzG6cM?si=UF1qOPAHXIrsuWSr",
     },
     {
       id: 8,
@@ -193,7 +193,7 @@ const SuccessStories = () => {
         "Building social connections through gardening",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/6s8d9f8s",
+      videoUrl: "https://www.youtube.com/embed/59PiwBaVkmU?si=gFi--h54gE4PRaiM",
     },
     {
       id: 9,
@@ -215,7 +215,7 @@ const SuccessStories = () => {
         "Market opportunities for organic products",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/7s8d9f8s",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     },
     {
       id: 10,
@@ -237,7 +237,7 @@ const SuccessStories = () => {
         "Improving yield through innovation",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/8s8d9f8s",
+      videoUrl: "https://www.youtube.com/embed/V9NAGL-Ji20?si=oc3ZN519TLldxkR0",
     },
     {
       id: 11,
@@ -259,7 +259,7 @@ const SuccessStories = () => {
         "Community involvement in preserving traditions",
       ],
       hasVideo: true,
-      videoUrl: "https://www.youtube.com/embed/9s8d9f8s",
+      videoUrl: "https://www.youtube.com/embed/sOF6lYBZV6w?si=HuQJ44VPiObj3JMV",
     },
   ];
 
@@ -567,5 +567,11 @@ const SuccessStories = () => {
 };
 
 export default SuccessStories;
+
+
+
+
+
+
 
 
